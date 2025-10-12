@@ -3,7 +3,7 @@
     <parent>
         <artifactId>heima-leadnews</artifactId>
         <groupId>com.heima</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <version>0.0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -128,6 +128,12 @@
             <artifactId>joda-time</artifactId>
             <version>2.10.5</version>
         </dependency>
+        <dependency>
+            <groupId>com.heima</groupId>
+            <artifactId>heima-leadnews-model</artifactId>
+        </dependency>
+
+
 
     </dependencies>
 </project>
