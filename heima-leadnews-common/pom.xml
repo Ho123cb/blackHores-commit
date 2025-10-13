@@ -132,8 +132,21 @@
             <groupId>com.heima</groupId>
             <artifactId>heima-leadnews-model</artifactId>
         </dependency>
-
-
-
+        <!-- Swagger 核心 -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+        </dependency>
+        <!-- Swagger UI 界面 -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-spring-boot-starter</artifactId>
+        </dependency>
     </dependencies>
+
+
 </project>
