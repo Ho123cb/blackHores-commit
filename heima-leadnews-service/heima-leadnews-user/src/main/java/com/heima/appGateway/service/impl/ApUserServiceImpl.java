@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.heima.model.common.dtos.LoginDto;
 import com.heima.model.common.dtos.ResponseResult;
 import com.heima.model.common.enums.AppHttpCodeEnum;
-import com.heima.model.common.pojos.ApUser;
+import com.heima.model.user.pojos.ApUser;
 import com.heima.appGateway.mapper.ApUserMapper;
 import com.heima.appGateway.service.IApUserService;
 import com.heima.utils.common.AppJwtUtil;

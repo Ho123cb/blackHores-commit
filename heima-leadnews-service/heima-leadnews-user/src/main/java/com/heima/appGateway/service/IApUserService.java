@@ -2,7 +2,7 @@ package com.heima.appGateway.service;
 
 import com.heima.model.common.dtos.LoginDto;
 import com.heima.model.common.dtos.ResponseResult;
-import com.heima.model.common.pojos.ApUser;
+import com.heima.model.user.pojos.ApUser;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
