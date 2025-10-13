@@ -12,6 +12,7 @@ import com.heima.user.mapper.ApUserMapper;
 import com.heima.user.service.IApUserService;
 import com.heima.utils.common.AppJwtUtil;
 import org.apache.commons.codec.cli.Digest;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
@@ -37,8 +38,9 @@ public class ApUserServiceImpl extends ServiceImpl<ApUserMapper, ApUser> impleme
     public ResponseResult loginAuth(LoginDto loginDto) {
         //1. 判断是不是游客
         String phone = loginDto.getPhone();
+        String password = loginDto.getPassword();
         //1.1 判断是否为空 为空则是游客准备直接返回
-        if("".equals(phone) || phone == null){
+        if( StringUtils.isBlank(phone) || StringUtils.isBlank(password)){
             String token = AppJwtUtil.getToken(0L);
             Map map = new HashMap(1);
             map.put("token", token);
@@ -55,7 +57,7 @@ public class ApUserServiceImpl extends ServiceImpl<ApUserMapper, ApUser> impleme
 
         String salt = apUser.getSalt();
         //2.2将盐与用户输入的密码与数据库中的密码比对
-        String toBeTest = DigestUtils.md5DigestAsHex((salt + loginDto.getPassword()).getBytes());
+        String toBeTest = DigestUtils.md5DigestAsHex((password + salt).getBytes());
         if(!toBeTest.equals(apUser.getPassword())){
             return ResponseResult.errorResult(AppHttpCodeEnum.LOGIN_PASSWORD_ERROR);
         }

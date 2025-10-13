@@ -9,7 +9,7 @@ class HeimaLeadnewsUserApplicationTests {
 
     @Test
     void contextLoads() {
-        String s = DigestUtils.md5DigestAsHex("abcabc".getBytes());
+        String s = DigestUtils.md5DigestAsHex("abc123abc".getBytes());
         System.out.println("==============");
         System.out.println(s);
     }
