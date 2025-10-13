@@ -1,0 +1,22 @@
+#spring:
+#  cloud:
+#    gateway:
+#      globals:
+#        add-to-simple-url-handler-mapping: true
+#        corsConfigurations:
+#          '[/**]':
+#            allowedHeaders: "*"
+#            allowedOrigins: "*"
+#            allowedMethods:
+#              - GET
+#              - POST
+#              - DELETE
+#              - PUT
+#              - OPTIONS
+#      routes:
+#        - id: user
+#          uri: lb://leadnews-user
+#          predicates:
+#            - Path=/user/**
+#          filters:
+#            - StripPrefix=1       # ← 必须是 1，没有空格

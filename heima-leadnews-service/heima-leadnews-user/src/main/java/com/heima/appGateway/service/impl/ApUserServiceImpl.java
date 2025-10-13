@@ -1,24 +1,20 @@
-package com.heima.user.service.impl;
+package com.heima.appGateway.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hankcs.hanlp.collection.dartsclone.DartMap;
 import com.heima.model.common.dtos.LoginDto;
 import com.heima.model.common.dtos.ResponseResult;
 import com.heima.model.common.enums.AppHttpCodeEnum;
 import com.heima.model.common.pojos.ApUser;
-import com.heima.user.mapper.ApUserMapper;
-import com.heima.user.service.IApUserService;
+import com.heima.appGateway.mapper.ApUserMapper;
+import com.heima.appGateway.service.IApUserService;
 import com.heima.utils.common.AppJwtUtil;
-import org.apache.commons.codec.cli.Digest;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**

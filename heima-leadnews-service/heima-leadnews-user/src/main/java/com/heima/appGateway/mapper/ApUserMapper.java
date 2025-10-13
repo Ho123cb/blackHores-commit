@@ -1,4 +1,4 @@
-package com.heima.user.mapper;
+package com.heima.appGateway.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.heima.model.common.pojos.ApUser;

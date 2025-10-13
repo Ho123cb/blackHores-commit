@@ -1,4 +1,4 @@
-package com.heima.user;
+package com.heima.appGateway;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
@@ -7,7 +7,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 
 @EnableDiscoveryClient
-@MapperScan("com.heima.user.mapper")
+@MapperScan("com.heima.appGateway.mapper")
 @SpringBootApplication
 public class UserApplication {
 
