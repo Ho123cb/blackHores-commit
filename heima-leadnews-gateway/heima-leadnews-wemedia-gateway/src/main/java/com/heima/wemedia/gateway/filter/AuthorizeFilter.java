@@ -53,10 +53,6 @@ public class AuthorizeFilter implements Ordered, GlobalFilter {
             ServerHttpRequest serverHttpRequest = request.mutate().headers(
                     header -> header.add("userId", userId.toString())
                 ).build();
-            log.info("====");
-            log.info("====");
-            log.info("====");
-            log.info("userId:{}",userId);
             exchange.mutate().request(serverHttpRequest).build();
         } catch (Exception e) {
             e.printStackTrace();
