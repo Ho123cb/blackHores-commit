@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heima.wemedia.mapper.WmMaterialMapper">
+
+
+    <insert id="insertAndReturnKey"  keyProperty="id" keyColumn="id" useGeneratedKeys="true" parameterType="com.heima.model.wemedia.pojos.WmMaterial">
+        insert into wm_material (type, url, created_time, is_collection, user_id)  values (#{type},#{url},#{createdTime},#{isCollection},#{userId})
+    </insert>
+</mapper>

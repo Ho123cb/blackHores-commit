@@ -19,6 +19,7 @@
 
     <modules>
         <module>heima-leadnews-app-gateway</module>
+        <module>heima-leadnews-wemedia-gateway</module>
     </modules>
 
     <dependencies>
