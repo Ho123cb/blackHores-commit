@@ -1,10 +1,15 @@
 package com.heima.wemedia.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.heima.file.service.FileStorageService;
+import com.heima.model.common.dtos.PageResponseResult;
 import com.heima.model.common.dtos.ResponseResult;
 import com.heima.model.common.enums.AppHttpCodeEnum;
+import com.heima.model.wemedia.dtos.WmMaterialDto;
 import com.heima.model.wemedia.pojos.WmMaterial;
 import com.heima.utils.thread.WmThreadLocalUtil;
 import com.heima.wemedia.mapper.WmMaterialMapper;
@@ -66,5 +71,32 @@ public class WmMaterialServiceImpl extends ServiceImpl<WmMaterialMapper, WmMater
         wrapper.eq("id",wmMaterial.getId());
         WmMaterial wmMaterialResult = wmMaterialMapper.selectOne(wrapper);
         return ResponseResult.okResult(wmMaterialResult);
+    }
+
+    /**
+     * 实现逻辑：
+     * 1. 开启对应的分页查询
+     * 2. 根据条件进行查询
+     * 3. 构建返回结果
+     * @param wmMaterialDto
+     * @return
+     */
+    @Override
+    public ResponseResult customList(WmMaterialDto wmMaterialDto) {
+        //检查并修复分页参数
+        wmMaterialDto.checkParam();
+        //开启对应的分页查询
+        IPage iPage = new Page(wmMaterialDto.getPage(),wmMaterialDto.getSize());
+        //根据条件进行查询
+        LambdaQueryWrapper<WmMaterial> lq = new LambdaQueryWrapper<>();
+        lq.eq(WmMaterial::getUserId, WmThreadLocalUtil.getUser().getApUserId());
+        lq.eq(WmMaterial::getIsCollection, wmMaterialDto.getIsCollection());
+        lq.orderByDesc(WmMaterial::getCreatedTime);
+
+        iPage = page(iPage, lq);
+
+        ResponseResult responseResult = new PageResponseResult(wmMaterialDto.getPage(),wmMaterialDto.getSize(),(int)iPage.getTotal());
+        responseResult.setData(iPage.getRecords());
+        return responseResult;
     }
 }

@@ -1,6 +1,8 @@
 package com.heima.wemedia.controller.v1;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.heima.model.common.dtos.ResponseResult;
+import com.heima.model.wemedia.dtos.WmMaterialDto;
 import com.heima.wemedia.service.WmMaterialService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,5 +28,11 @@ public class MaterialController {
     @PostMapping("/upload_picture")
     public ResponseResult uploadPicture(@RequestBody MultipartFile multipartFile){
         return wmMaterialService.uploadPicture(multipartFile);
+    }
+
+    @ApiOperation("用于查询图片素材列表")
+    @PostMapping("/list")
+    public ResponseResult uploadVideo(@RequestBody WmMaterialDto wmMaterialDto){
+        return wmMaterialService.customList(wmMaterialDto);
     }
 }
