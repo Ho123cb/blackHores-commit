@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.heima.model.common.dtos.PageResponseResult;
 import com.heima.model.common.dtos.ResponseResult;
+import com.heima.model.common.enums.AppHttpCodeEnum;
 import com.heima.model.wemedia.dtos.WmNewsPageReqDto;
 import com.heima.model.wemedia.pojos.WmNews;
 import com.heima.wemedia.mapper.WmNewsMapper;
@@ -28,6 +29,8 @@ public class WmNewsServiceImpl  extends ServiceImpl<WmNewsMapper, WmNews> implem
     @Override
     public ResponseResult customList(WmNewsPageReqDto dto) {
         //1.分页功能：
+        if( dto == null)
+            return ResponseResult.errorResult(AppHttpCodeEnum.PARAM_INVALID);
         dto.checkParam();
         IPage page = new Page<>(dto.getPage(), dto.getSize());
 
