@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.UUID;
 
 
@@ -59,7 +60,7 @@ public class WmMaterialServiceImpl extends ServiceImpl<WmMaterialMapper, WmMater
         //插入数据到数据库：wm_material
         WmMaterial wmMaterial = WmMaterial.builder()
                 .url(fileURL)
-                .createdTime(LocalDateTime.now())
+                .createdTime(new Date())
                 .isCollection(false)
                 .type((byte)0)
                 .userId(WmThreadLocalUtil.getUser().getApUserId())

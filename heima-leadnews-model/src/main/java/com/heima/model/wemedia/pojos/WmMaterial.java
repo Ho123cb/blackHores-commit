@@ -6,7 +6,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Builder;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Date;
+
 
 /**
  * <p>
@@ -51,7 +52,7 @@ public class WmMaterial implements Serializable {
     /**
      * 创建时间
      */
-    private LocalDateTime createdTime;
+    private Date createdTime;
 
     public Integer getId() {
         return id;
@@ -93,11 +94,11 @@ public class WmMaterial implements Serializable {
         this.isCollection = isCollection;
     }
 
-    public LocalDateTime getCreatedTime() {
+    public Date getCreatedTime() {
         return createdTime;
     }
 
-    public void setCreatedTime(LocalDateTime createdTime) {
+    public void setCreatedTime(Date createdTime) {
         this.createdTime = createdTime;
     }
 

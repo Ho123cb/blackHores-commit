@@ -1,7 +1,9 @@
 package com.heima.wemedia.controller.v1;
 
 import com.heima.model.common.dtos.ResponseResult;
+import com.heima.model.wemedia.dtos.WmNewsDto;
 import com.heima.model.wemedia.dtos.WmNewsPageReqDto;
+import com.heima.model.wemedia.pojos.WmNews;
 import com.heima.wemedia.service.WmNewsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,5 +27,11 @@ public class NewsController {
     @PostMapping("/list")
     public ResponseResult list(@RequestBody WmNewsPageReqDto wmNewsPageReqDto) {
         return wmNewsService.customList(wmNewsPageReqDto);
+    }
+
+    @ApiOperation("自媒体文章保存和修改")
+    @PostMapping("/submit")
+    public ResponseResult submit(@RequestBody WmNewsDto dto) {
+        return wmNewsService.submit(dto);
     }
 }
