@@ -19,6 +19,7 @@
     <modules>
         <module>mybatisX-generationProject</module>
         <module>minio-demo</module>
+        <module>ContextSercurity-demo</module>
     </modules>
     <dependencies>
         <dependency>
