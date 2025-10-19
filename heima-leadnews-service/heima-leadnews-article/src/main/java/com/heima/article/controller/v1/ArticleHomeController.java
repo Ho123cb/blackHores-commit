@@ -2,6 +2,7 @@ package com.heima.article.controller.v1;
 
 import com.heima.article.service.IApArticleService;
 import com.heima.common.constants.ArticleConstants;
+import com.heima.model.article.dtos.ArticleDto;
 import com.heima.model.article.dtos.ArticleHomeDto;
 import com.heima.model.common.dtos.ResponseResult;
 import io.swagger.annotations.Api;
@@ -40,6 +41,17 @@ public class ArticleHomeController {
     public ResponseResult loadnew(@RequestBody ArticleHomeDto dto){
         ResponseResult result = iApArticleService.load(ArticleConstants.LOADTYPE_LOAD_NEW,dto);
         return result;
+    }
+
+    /**
+     * 自定义保存文章方法
+     * @param dto
+     * @return
+     */
+    @ApiOperation("保存文章")
+    @PostMapping("/save")
+    public ResponseResult customSave(@RequestBody ArticleDto dto){
+        return iApArticleService.customSave(dto);
     }
 
 

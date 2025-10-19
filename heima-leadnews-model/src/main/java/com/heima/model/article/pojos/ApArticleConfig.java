@@ -3,6 +3,9 @@ package com.heima.model.article.pojos;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
@@ -14,15 +17,25 @@ import java.io.Serializable;
  * @author finnhu
  * @since 2025-10-13
  */
+@Data
+@NoArgsConstructor
 @TableName("ap_article_config")
 public class ApArticleConfig implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    public ApArticleConfig(Long articleId){
+        this.articleId = articleId;
+        this.isComment = (byte)1;
+        this.isForward = (byte)1;
+        this.isDelete = (byte)0;
+        this.isDown = (byte)0;
+    }
+
     /**
      * 主键
      */
-    @TableId(value = "id", type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.ID_WORKER)
     private Long id;
 
     /**
