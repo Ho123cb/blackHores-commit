@@ -72,7 +72,7 @@ public class CustomGreenTextScan {
                         List<TextModerationPlusResponseBody.TextModerationPlusResponseBodyDataResult> result = data.getResult();
                         String riskLevel = data.getRiskLevel();
 
-                        if(riskLevel != "none") {
+                        if(!riskLevel.equals("none")) {
                             List<String> labels = new ArrayList<>();
                             for (int i = 0; i < result.size(); i++) {
                                 TextModerationPlusResponseBody.TextModerationPlusResponseBodyDataResult r = result.get(i);
@@ -82,7 +82,7 @@ public class CustomGreenTextScan {
 
                             resultMap.put("riskLevel",riskLevel);
                             resultMap.put("label", StringUtils.join(labels,","));
-                            if(riskLevel == "hign")
+                            if(riskLevel.equals("hign"))
                                 resultMap.put("suggestion", "block");
                             else
                                 resultMap.put("suggestion", "review");

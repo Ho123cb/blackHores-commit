@@ -170,14 +170,14 @@ public class CustomGreenImageScan {
                                 String riskLevel = r.getRiskLevel();
                                 String description = r.getDescription();
                                 String label = r.getLabel();
-                                if(riskLevel == "hign") {
+                                if(riskLevel.equals("hign")) {
                                     log.info("检测到插入图片具有高风险，审核失败~~~"+r.getDescription());
                                     result.put("riskLevel",riskLevel);
                                     result.put("label",label);
                                     result.put("suggestion", "block");
                                     return result;
                                 }
-                                else if(riskLevel != "none") {
+                                else if(!riskLevel.equals("none")) {
                                     log.info("检测到插入图片具有低风险，需要人工审核~~~"+r.getDescription());
                                     result.put("riskLevel",riskLevel);
                                     result.put("label",label);

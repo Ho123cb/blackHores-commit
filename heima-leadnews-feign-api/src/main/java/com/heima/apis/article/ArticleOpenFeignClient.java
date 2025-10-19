@@ -1,5 +1,6 @@
 package com.heima.apis.article;
 
+import com.heima.apis.article.fallback.ArticleOpenFeignClientFallBack;
 import com.heima.model.article.dtos.ArticleDto;
 import com.heima.model.common.dtos.ResponseResult;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -7,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@FeignClient("leadnews-article")
+@FeignClient(value = "leadnews-article", fallback = ArticleOpenFeignClientFallBack.class)
 public interface ArticleOpenFeignClient {
     /**
      * 自定义保存文章方法
