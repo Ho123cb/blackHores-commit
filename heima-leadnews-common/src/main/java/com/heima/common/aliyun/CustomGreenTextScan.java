@@ -9,6 +9,8 @@ import com.aliyun.green20220302.models.TextModerationPlusResponseBody;
 import com.aliyun.teaopenapi.models.Config;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +21,7 @@ import java.util.Map;
 
 @Getter
 @Setter
+@Slf4j
 @Component
 @ConfigurationProperties(prefix = "aliyun")
 public class CustomGreenTextScan {
@@ -60,38 +63,54 @@ public class CustomGreenTextScan {
             Map<String, Object> resultMap = new HashMap<>();
 
             if (response != null) {
-                resultMap.put("statusCode", response.getStatusCode());
-
                 if (response.getStatusCode() == 200) {
                     TextModerationPlusResponseBody body = response.getBody();
-                    resultMap.put("requestId", body.getRequestId());
-                    resultMap.put("code", body.getCode());
-                    resultMap.put("msg", body.getMessage());
-
                     Integer code = body.getCode();
                     if (code == 200) {
+                        log.info("阿里云检测文本成功~~~");
                         TextModerationPlusResponseBody.TextModerationPlusResponseBodyData data = body.getData();
-                        resultMap.put("data",data);
+                        List<TextModerationPlusResponseBody.TextModerationPlusResponseBodyDataResult> result = data.getResult();
+                        String riskLevel = data.getRiskLevel();
+
+                        if(riskLevel != "none") {
+                            List<String> labels = new ArrayList<>();
+                            for (int i = 0; i < result.size(); i++) {
+                                TextModerationPlusResponseBody.TextModerationPlusResponseBodyDataResult r = result.get(i);
+                                String label = r.getLabel();
+                                labels.add(label);
+                            }
+
+                            resultMap.put("riskLevel",riskLevel);
+                            resultMap.put("label", StringUtils.join(labels,","));
+                            if(riskLevel == "hign")
+                                resultMap.put("suggestion", "block");
+                            else
+                                resultMap.put("suggestion", "review");
+                            return resultMap;
+                        }
                     } else {
-                        resultMap.put("error", "text moderation not success. code: " + code);
+                        log.info("text moderation not success. code: {}",code);
+                        return null;
                     }
 
                 } else {
-                    resultMap.put("error", "response not success. status: " + response.getStatusCode());
+                    log.info("response not success. status: {}", response.getStatusCode());
+                    return null;
                 }
 
             } else {
-                resultMap.put("error", "response is null");
+                log.info("response is null");
+                return null;
             }
 
             //  打印美化 JSON
             System.out.println(JSON.toJSONString(resultMap, true));
-
+            resultMap.put("suggestion","pass");
             return resultMap;
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
 

@@ -17,6 +17,7 @@ import com.aliyun.teaopenapi.models.Config;
 import com.aliyun.teautil.models.RuntimeOptions;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.avro.data.Json;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
@@ -30,6 +31,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
+@Slf4j
 @Component
 @ConfigurationProperties(prefix = "aliyun")
 public class CustomGreenImageScan {
@@ -137,58 +139,67 @@ public class CustomGreenImageScan {
         return response;
     }
 
-    public Map greeImageScan(String filePath) throws Exception {
-        // 接入区域和地址请根据实际情况修改。
-        ImageModerationResponse response = invokeFunction(accessKeyId, secret, imageService,"green-cip.cn-shanghai.aliyuncs.com", filePath);
-        try {
-            // 自动路由。
-            if (response != null) {
-                //区域切换到cn-beijing。
-                if (500 == response.getStatusCode() || (response.getBody() != null && 500 == (response.getBody().getCode()))) {
-                    // 接入区域和地址请根据实际情况修改。
-                    response = invokeFunction(accessKeyId, secret, imageService,"green-cip.cn-beijing.aliyuncs.com", filePath);
+    public Map greenImageScan(List<String> filePathList) throws Exception {
+        for(int i = 0; i < filePathList.size(); i++){
+            String filePath = filePathList.get(i);
+            // 接入区域和地址请根据实际情况修改。
+            ImageModerationResponse response = invokeFunction(accessKeyId, secret, imageService,"green-cip.cn-shanghai.aliyuncs.com", filePath);
+            try {
+                // 自动路由。
+                if (response != null) {
+                    //区域切换到cn-beijing。
+                    if (500 == response.getStatusCode() || (response.getBody() != null && 500 == (response.getBody().getCode()))) {
+                        // 接入区域和地址请根据实际情况修改。
+                        response = invokeFunction(accessKeyId, secret, imageService,"green-cip.cn-beijing.aliyuncs.com", filePath);
+                    }
                 }
-            }
-            // 打印检测结果。
-            Map<String, Object> result = new HashMap<>();
-            if (response != null) {
-                result.put("statusCode", response.getStatusCode());
+                // 打印检测结果。
+                Map<String, Object> result = new HashMap<>();
+                if (response != null) {
 
-                if (response.getStatusCode() == 200) {
-                    ImageModerationResponseBody body = response.getBody();
-                    result.put("requestId", body.getRequestId());
-                    result.put("code", body.getCode());
-                    result.put("msg", body.getMsg());
 
-                    if (body.getCode() == 200) {
-                        ImageModerationResponseBodyData data = body.getData();
-                        result.put("dataId", data.getDataId());
+                    if (response.getStatusCode() == 200) {//https请求是否成功
+                        ImageModerationResponseBody body = response.getBody();
 
-                        List<Map<String, Object>> resultList = new java.util.ArrayList<>();
-                        List<ImageModerationResponseBodyDataResult> results = data.getResult();
+                        if (body.getCode() == 200) {//向阿里云端的请求是否成功
+                            ImageModerationResponseBodyData data = body.getData();
+                            log.info("访问阿里云图片检测成功~~~");
+                            List<ImageModerationResponseBodyDataResult> results = data.getResult();
 
-                        for (ImageModerationResponseBodyDataResult r : results) {
-                            Map<String, Object> item = new HashMap<>();
-                            item.put("label", r.getLabel());
-                            item.put("confidence", r.getConfidence());
-                            item.put("description", r.getDescription());
-                            item.put("riskLevel", r.getRiskLevel());
-                            resultList.add(item);
+                            for (ImageModerationResponseBodyDataResult r : results) {
+                                String riskLevel = r.getRiskLevel();
+                                String description = r.getDescription();
+                                String label = r.getLabel();
+                                if(riskLevel == "hign") {
+                                    log.info("检测到插入图片具有高风险，审核失败~~~"+r.getDescription());
+                                    result.put("riskLevel",riskLevel);
+                                    result.put("label",label);
+                                    result.put("suggestion", "block");
+                                    return result;
+                                }
+                                else if(riskLevel != "none") {
+                                    log.info("检测到插入图片具有低风险，需要人工审核~~~"+r.getDescription());
+                                    result.put("riskLevel",riskLevel);
+                                    result.put("label",label);
+                                    result.put("suggestion", "review");
+                                    return result;
+                                }
+
+                            }
+                            log.info("检测到图片没有风险~~~");
+                            result.put("suggestion", "pass");
+                        } else {
+                            log.info("image moderation not success, code: {}", body.getCode());
                         }
-
-                        result.put("results", resultList);
                     } else {
-                        result.put("error", "image moderation not success, code: " + body.getCode());
+                        log.info("response not success, status: {}", response.getStatusCode());
                     }
                 } else {
-                    result.put("error", "response not success, status: " + response.getStatusCode());
+                    log.info("response is null");
                 }
-            } else {
-                result.put("error", "response is null");
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            return result;
-        } catch (Exception e) {
-            e.printStackTrace();
         }
         
         return null;

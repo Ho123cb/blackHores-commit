@@ -12,7 +12,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 @SpringBootTest(classes = WemediaApplication.class)
@@ -42,8 +44,9 @@ public class AliyunTest {
         FileOutputStream fileOutputStream = new FileOutputStream(filePath);
         fileOutputStream.write(bytes);
         fileOutputStream.close();
-
-        Map map = customGreenImageScan.greeImageScan(filePath);
+        List<String> list = new ArrayList<>();
+        list.add(filePath);
+        Map map = customGreenImageScan.greenImageScan(list);
         System.out.println(map);
     }
 }

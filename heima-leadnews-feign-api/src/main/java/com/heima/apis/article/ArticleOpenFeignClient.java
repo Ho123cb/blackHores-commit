@@ -8,13 +8,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @FeignClient("leadnews-article")
-@RequestMapping("/api/v1/article")
 public interface ArticleOpenFeignClient {
     /**
      * 自定义保存文章方法
      * @param dto
      * @return
      */
-    @PostMapping("/save")
+    @PostMapping("/api/v1/article/save")
     public ResponseResult custoSave(@RequestBody ArticleDto dto);
 }
