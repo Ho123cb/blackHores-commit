@@ -30,7 +30,7 @@ public class WmMateriaInterrupt implements HandlerInterceptor {
         if (optional.isPresent() && StringUtils.isNotBlank(userIdStr)) {
             Integer userId = Integer.valueOf(userIdStr);
             WmUser user = new WmUser();
-            user.setApUserId(userId);
+            user.setId(userId);
             WmThreadLocalUtil.setUser(user);
         }
 

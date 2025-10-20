@@ -90,7 +90,7 @@ public class WmMaterialServiceImpl extends ServiceImpl<WmMaterialMapper, WmMater
         IPage iPage = new Page(wmMaterialDto.getPage(),wmMaterialDto.getSize());
         //根据条件进行查询
         LambdaQueryWrapper<WmMaterial> lq = new LambdaQueryWrapper<>();
-        lq.eq(WmMaterial::getUserId, WmThreadLocalUtil.getUser().getApUserId());
+        lq.eq(WmMaterial::getUserId, WmThreadLocalUtil.getUser().getId());
         lq.eq(WmMaterial::getIsCollection, wmMaterialDto.getIsCollection());
         lq.orderByDesc(WmMaterial::getCreatedTime);
 

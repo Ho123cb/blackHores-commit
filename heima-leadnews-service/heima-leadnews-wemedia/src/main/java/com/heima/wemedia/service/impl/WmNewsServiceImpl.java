@@ -33,6 +33,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronizationAdapter;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import javax.annotation.Resource;
 import java.lang.reflect.InvocationTargetException;
@@ -128,7 +130,15 @@ public class WmNewsServiceImpl  extends ServiceImpl<WmNewsMapper, WmNews> implem
         saveRelativeInfoForCover(dto,wmNews,materials);
 
         //5. 提交审核：
-        wmNewsAutoScanService.autoScanWmNews(wmNews.getId());
+        Integer id = wmNews.getId();
+
+        // 事务提交后再异步执行审核
+        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronizationAdapter() {
+            @Override
+            public void afterCommit() {
+                wmNewsAutoScanService.autoScanWmNews(id); // @Async
+            }
+        });
 
         return ResponseResult.okResult(AppHttpCodeEnum.SUCCESS);
 

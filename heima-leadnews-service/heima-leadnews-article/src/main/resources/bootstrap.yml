@@ -10,20 +10,20 @@ spring:
       config:
         server-addr: 192.168.200.130:8848
         file-extension: yaml
-logging:
-  level:
-    # MyBatis 主包
-    org.mybatis: debug
-    # 如果是 Spring Boot 集成的 MyBatis Starter
-    org.mybatis.spring.SqlSessionFactoryBean: debug
-    # 如果是 MyBatis-Plus
-    com.baomidou.mybatisplus: debug
-    # Mapper 扫描包（可选，建议加）
-    com.heima.mapper: debug
-    org.apache.ibatis: debug
-    com.yourpkg.mapper: debug
-mybatis-plus:
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#logging:
+#  level:
+#    # MyBatis 主包
+#    org.mybatis: debug
+#    # 如果是 Spring Boot 集成的 MyBatis Starter
+#    org.mybatis.spring.SqlSessionFactoryBean: debug
+#    # 如果是 MyBatis-Plus
+#    com.baomidou.mybatisplus: debug
+#    # Mapper 扫描包（可选，建议加）
+#    com.heima.mapper: debug
+#    org.apache.ibatis: debug
+#    com.yourpkg.mapper: debug
+#mybatis-plus:
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 

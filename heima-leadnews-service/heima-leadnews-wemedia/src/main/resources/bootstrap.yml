@@ -22,6 +22,10 @@ logging:
     com.heima.mapper: debug
     org.apache.ibatis: debug
     com.yourpkg.mapper: debug
+    org.springframework.cloud.openfeign: DEBUG
+    com.netflix.hystrix: DEBUG
+    feign: DEBUG
+
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

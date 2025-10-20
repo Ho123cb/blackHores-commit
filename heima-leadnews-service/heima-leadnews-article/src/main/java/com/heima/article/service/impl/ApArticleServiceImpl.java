@@ -1,13 +1,13 @@
 package com.heima.article.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.heima.article.mapper.ApArticleConfigMapper;
 import com.heima.article.mapper.ApArticleContentMapper;
 import com.heima.article.mapper.ApArticleMapper;
-import com.heima.article.service.IApArticleContentService;
+import com.heima.article.service.ArticleFreemarkerService;
 import com.heima.article.service.IApArticleService;
 import com.heima.common.constants.ArticleConstants;
-import com.heima.common.exception.CustomException;
 import com.heima.model.article.dtos.ArticleDto;
 import com.heima.model.article.dtos.ArticleHomeDto;
 import com.heima.model.article.pojos.ApArticle;
@@ -100,8 +100,14 @@ public class ApArticleServiceImpl extends ServiceImpl<ApArticleMapper, ApArticle
      * @return
      */
     @Override
-    public ResponseResult customSave(ArticleDto dto) {
+    public ResponseResult customSave(ArticleDto dto)   {
 
+//        try {
+//            Thread.sleep(3000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//
+//        }
         //1. 判断参数是否有效
         if(dto == null){
             return ResponseResult.errorResult(AppHttpCodeEnum.PARAM_INVALID,"参数失效");
@@ -147,9 +153,18 @@ public class ApArticleServiceImpl extends ServiceImpl<ApArticleMapper, ApArticle
             }
         }
 
+        //异步调用 生成静态文件上传到minio中
+        articleFreemarkerService.buildArticleToMinIO(apArticle,dto.getContent());
         //5. 构建返回数据
         return ResponseResult.okResult(apArticle.getId());
     }
 
+    @Resource
+    private ArticleFreemarkerService articleFreemarkerService;
+    /**
+     * 保存app端相关文章
+     * @param dto
+     * @return
+     */
 
 }
