@@ -24,6 +24,8 @@ import com.heima.wemedia.mapper.WmNewsMapper;
 import com.heima.wemedia.mapper.WmNewsMaterialMapper;
 import com.heima.wemedia.service.WmNewsAutoScanService;
 import com.heima.wemedia.service.WmNewsService;
+import io.seata.core.context.RootContext;
+import io.seata.spring.annotation.GlobalTransactional;
 import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
@@ -40,6 +42,7 @@ import javax.annotation.Resource;
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 @Service
@@ -85,6 +88,7 @@ public class WmNewsServiceImpl  extends ServiceImpl<WmNewsMapper, WmNews> implem
      * @param dto
      * @return
      */
+    @GlobalTransactional(name="submit-WmNews", rollbackFor = Exception.class)
     @Override
     public ResponseResult submit(WmNewsDto dto){
 
@@ -130,15 +134,17 @@ public class WmNewsServiceImpl  extends ServiceImpl<WmNewsMapper, WmNews> implem
         saveRelativeInfoForCover(dto,wmNews,materials);
 
         //5. 提交审核：
+
         Integer id = wmNews.getId();
 
         // 事务提交后再异步执行审核
         TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronizationAdapter() {
             @Override
             public void afterCommit() {
-                wmNewsAutoScanService.autoScanWmNews(id); // @Async
+                wmNewsAutoScanService.autoScanWmNews(id);
             }
         });
+
 
         return ResponseResult.okResult(AppHttpCodeEnum.SUCCESS);
 
@@ -268,4 +274,7 @@ public class WmNewsServiceImpl  extends ServiceImpl<WmNewsMapper, WmNews> implem
         }
 
     }
+
+
+
 }

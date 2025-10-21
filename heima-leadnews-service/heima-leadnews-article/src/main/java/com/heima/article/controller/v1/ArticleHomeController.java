@@ -4,13 +4,11 @@ import com.heima.article.service.IApArticleService;
 import com.heima.common.constants.ArticleConstants;
 import com.heima.model.article.dtos.ArticleDto;
 import com.heima.model.article.dtos.ArticleHomeDto;
+import com.heima.model.article.pojos.ApArticle;
 import com.heima.model.common.dtos.ResponseResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -54,5 +52,14 @@ public class ArticleHomeController {
         return iApArticleService.customSave(dto);
     }
 
-
+    /**
+     * 用于测试seata
+     */
+    @GetMapping("/saves")
+    public ResponseResult saves(){
+        ApArticle article = new ApArticle();
+        article.setAuthorName("sdadsa");
+        iApArticleService.save(article);
+        return null;
+    }
 }

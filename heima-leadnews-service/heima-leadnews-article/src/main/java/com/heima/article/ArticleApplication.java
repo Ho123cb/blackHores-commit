@@ -10,11 +10,13 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @RefreshScope
 @SpringBootApplication
 @EnableAsync
 @EnableDiscoveryClient
+@EnableTransactionManagement
 @MapperScan("com.heima.article.mapper")
 public class ArticleApplication {
 

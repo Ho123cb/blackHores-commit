@@ -18,6 +18,7 @@ import com.heima.wemedia.mapper.WmNewsMapper;
 import com.heima.wemedia.mapper.WmSensitiveMapper;
 import com.heima.wemedia.mapper.WmUserMapper;
 import com.heima.wemedia.service.WmNewsAutoScanService;
+import io.seata.core.context.RootContext;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -55,6 +56,7 @@ public class WmNewsAutoScanServiceImpl implements WmNewsAutoScanService {
     @Async
     @Override
     public void autoScanWmNews(Integer id) {
+        log.info("当前autoScanwmNews的xid：{}", RootContext.getXID());
         //1.查询自媒体文章
         WmNews wmNews = wmNewsMapper.selectById(id);
         if(wmNews == null){

@@ -15,14 +15,17 @@ import com.heima.model.article.pojos.ApArticleConfig;
 import com.heima.model.article.pojos.ApArticleContent;
 import com.heima.model.common.dtos.ResponseResult;
 import com.heima.model.common.enums.AppHttpCodeEnum;
+import io.seata.core.context.RootContext;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * <p>
@@ -152,9 +155,18 @@ public class ApArticleServiceImpl extends ServiceImpl<ApArticleMapper, ApArticle
                 e.printStackTrace();
             }
         }
+        int i = 1/0;
+        final ApArticle ap = new ApArticle();
+        try {
+            BeanUtils.copyProperties(ap, dto);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
 
-        //异步调用 生成静态文件上传到minio中
-        articleFreemarkerService.buildArticleToMinIO(apArticle,dto.getContent());
+        articleFreemarkerService.buildArticleToMinIO(ap,dto.getContent());
+
         //5. 构建返回数据
         return ResponseResult.okResult(apArticle.getId());
     }
@@ -166,5 +178,7 @@ public class ApArticleServiceImpl extends ServiceImpl<ApArticleMapper, ApArticle
      * @param dto
      * @return
      */
+
+
 
 }
