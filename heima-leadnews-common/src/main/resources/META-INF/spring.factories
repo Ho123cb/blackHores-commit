@@ -6,7 +6,8 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   com.heima.common.aliyun.GreenTextScan,\
   com.heima.common.aliyun.CustomGreenImageScan,\
   com.heima.common.aliyun.CustomGreenTextScan,\
-  com.heima.common.tess4j.Tess4jClient
+  com.heima.common.tess4j.Tess4jClient,\
+  com.heima.common.cache.CacheService
 
 
 
