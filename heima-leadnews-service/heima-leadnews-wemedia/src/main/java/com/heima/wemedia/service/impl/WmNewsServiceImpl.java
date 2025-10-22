@@ -24,6 +24,7 @@ import com.heima.wemedia.mapper.WmNewsMapper;
 import com.heima.wemedia.mapper.WmNewsMaterialMapper;
 import com.heima.wemedia.service.WmNewsAutoScanService;
 import com.heima.wemedia.service.WmNewsService;
+import com.heima.wemedia.service.WmNewsTaskService;
 import io.seata.core.context.RootContext;
 import io.seata.spring.annotation.GlobalTransactional;
 import io.swagger.models.auth.In;
@@ -58,6 +59,8 @@ public class WmNewsServiceImpl  extends ServiceImpl<WmNewsMapper, WmNews> implem
 
     @Resource
     private WmNewsAutoScanService wmNewsAutoScanService;
+    @Resource
+    private WmNewsTaskService wmNewsTaskService;
 
     @Override
     public ResponseResult customList(WmNewsPageReqDto dto) {
@@ -141,7 +144,9 @@ public class WmNewsServiceImpl  extends ServiceImpl<WmNewsMapper, WmNews> implem
         TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronizationAdapter() {
             @Override
             public void afterCommit() {
-                wmNewsAutoScanService.autoScanWmNews(id);
+                //审核文章
+                //        wmNewsAutoScanService.autoScanWmNews(wmNews.getId());
+                wmNewsTaskService.addNewsToTask(wmNews.getId(),wmNews.getPublishTime());
             }
         });
 

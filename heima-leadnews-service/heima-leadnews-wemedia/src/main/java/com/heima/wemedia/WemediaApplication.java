@@ -8,11 +8,13 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.cloud.netflix.hystrix.EnableHystrix;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableFeignClients(basePackages = "com.heima.apis")
 @EnableAsync  //开启异步调用
+@EnableScheduling
 @EnableHystrix
 @MapperScan("com.heima.wemedia.mapper")
 @RefreshScope

@@ -155,7 +155,6 @@ public class ApArticleServiceImpl extends ServiceImpl<ApArticleMapper, ApArticle
                 e.printStackTrace();
             }
         }
-        int i = 1/0;
         final ApArticle ap = new ApArticle();
         try {
             BeanUtils.copyProperties(ap, dto);
