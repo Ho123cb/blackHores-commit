@@ -21,6 +21,7 @@
         <module>minio-demo</module>
         <module>ContextSercurity-demo</module>
         <module>test4j-demo</module>
+        <module>kafaka-demo</module>
     </modules>
     <dependencies>
         <dependency>

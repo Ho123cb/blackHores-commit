@@ -10,6 +10,13 @@ spring:
       config:
         server-addr: 192.168.200.130:8848
         file-extension: yaml
+  kafka:
+    consumer:
+      bootstrap-servers: 192.168.200.130:9092
+      group-id: leadnews
+      key-deserializer: StringDeserializer
+      value-deserializer: StringDeserializer
+
 #logging:
 #  level:
 #    # MyBatis 主包

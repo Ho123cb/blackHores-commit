@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.heima.model.common.dtos.ResponseResult;
 import com.heima.model.wemedia.dtos.WmNewsDto;
 import com.heima.model.wemedia.dtos.WmNewsPageReqDto;
+import com.heima.model.wemedia.dtos.WmNewsUpOrDownDto;
 import com.heima.model.wemedia.pojos.WmNews;
 
 import java.lang.reflect.InvocationTargetException;
@@ -24,4 +25,11 @@ public interface WmNewsService extends IService<WmNews> {
      * @return
      */
     ResponseResult submit(WmNewsDto dto) ;
+
+    /**
+     * 上架或下架
+     * @param dto
+     * @return
+     */
+    ResponseResult downOrUp(WmNewsUpOrDownDto dto);
 }

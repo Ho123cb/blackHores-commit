@@ -58,7 +58,7 @@ public class WmNewsTaskServiceImpl  implements WmNewsTaskService {
     /**
      * 消费延迟队列数据
      */
-    @Scheduled(fixedRate = 1000)
+    @Scheduled(fixedRate = 10000)
     @Override
     @SneakyThrows
     public void scanNewsByTask() {
