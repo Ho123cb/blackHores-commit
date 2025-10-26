@@ -1,0 +1,36 @@
+server:
+  port: 6001
+spring:
+  application:
+    name: leadnews-admin
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.200.130:8848
+      config:
+        server-addr: 192.168.200.130:8848
+        file-extension: yaml
+#  kafka:
+#    consumer:
+#      bootstrap-servers: 192.168.200.130:9092
+#      group-id: leadnews
+#      key-deserializer: StringDeserializer
+#      value-deserializer: StringDeserializer
+
+#logging:
+#  level:
+#    # MyBatis 主包
+#    org.mybatis: debug
+#    # 如果是 Spring Boot 集成的 MyBatis Starter
+#    org.mybatis.spring.SqlSessionFactoryBean: debug
+#    # 如果是 MyBatis-Plus
+#    com.baomidou.mybatisplus: debug
+#    # Mapper 扫描包（可选，建议加）
+#    com.heima.mapper: debug
+#    org.apache.ibatis: debug
+#    com.yourpkg.mapper: debug
+#mybatis-plus:
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
