@@ -116,4 +116,5 @@ public class WmChannel implements Serializable {
             ", createdTime = " + createdTime +
             "}";
     }
+
 }
