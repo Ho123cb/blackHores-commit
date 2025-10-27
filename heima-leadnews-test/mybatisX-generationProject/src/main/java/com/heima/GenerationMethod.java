@@ -20,12 +20,15 @@ public class GenerationMethod {
                                     .outputDir(to); // 指定输出目录
                         })
                         .packageConfig(builder -> {
-                            builder.parent("com.heima.model.common.pojos") // 设置父包名
-                                    .moduleName("heima-leadnews-model") // 设置父包模块名
+                            builder.parent("com.heima") // 设置父包名
+                                    .moduleName("admin") // 设置父包模块名
+                                    .entity("pojos")
                                     .pathInfo(Collections.singletonMap(OutputFile.xml, to)); // 设置mapperXml生成路径
                         })
+
                         .strategyConfig(builder -> {
-                            builder.addInclude("ad_user");// 设置需要生成的表名
+                            builder.addInclude(
+                                    "ad_article_statistics","ad_channel_label","ad_function","ad_label","ad_menu","ad_recommend_strategy","ad_role","ad_role_auth","ad_strategy_group","ad_user","ad_user_equipment","ad_user_login","ad_user_opertion","ad_user_role","ad_vistor_statistics");// 设置需要生成的表名
 //                            .addTablePrefix("t_", "c_"); // 设置过滤表前缀
                         })
                         .templateEngine(new FreemarkerTemplateEngine()) // 使用Freemarker引擎模板，默认的是Velocity引擎模板

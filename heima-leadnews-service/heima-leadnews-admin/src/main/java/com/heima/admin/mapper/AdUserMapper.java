@@ -1,6 +1,5 @@
 package com.heima.admin.mapper;
 
-
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.heima.model.admin.pojos.AdUser;
 
@@ -10,7 +9,7 @@ import com.heima.model.admin.pojos.AdUser;
  * </p>
  *
  * @author finnhu
- * @since 2025-10-26
+ * @since 2025-10-27
  */
 public interface AdUserMapper extends BaseMapper<AdUser> {
 

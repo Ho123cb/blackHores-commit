@@ -1,20 +1,18 @@
 package com.heima.model.admin.pojos;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * <p>
  * 管理员用户信息表
  * </p>
  *
- * @author itheima
+ * @author finnhu
+ * @since 2025-10-27
  */
-@Data
 @TableName("ad_user")
 public class AdUser implements Serializable {
 
@@ -28,64 +26,155 @@ public class AdUser implements Serializable {
     /**
      * 登录用户名
      */
-    @TableField("name")
     private String name;
 
     /**
      * 登录密码
      */
-    @TableField("password")
     private String password;
 
     /**
      * 盐
      */
-    @TableField("salt")
     private String salt;
 
     /**
      * 昵称
      */
-    @TableField("nickname")
     private String nickname;
 
     /**
      * 头像
      */
-    @TableField("image")
     private String image;
 
     /**
      * 手机号
      */
-    @TableField("phone")
     private String phone;
 
     /**
-     * 状态
-            0 暂时不可用
-            1 永久不可用
-            9 正常可用
+     * 状态	            0 暂时不可用	            1 永久不可用	            9 正常可用
      */
-    @TableField("status")
-    private Integer status;
+    private Byte status;
 
     /**
      * 邮箱
      */
-    @TableField("email")
     private String email;
 
     /**
      * 最后一次登录时间
      */
-    @TableField("login_time")
-    private Date loginTime;
+    private LocalDateTime loginTime;
 
     /**
      * 创建时间
      */
-    @TableField("created_time")
-    private Date createdTime;
+    private LocalDateTime createdTime;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public Byte getStatus() {
+        return status;
+    }
+
+    public void setStatus(Byte status) {
+        this.status = status;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public LocalDateTime getLoginTime() {
+        return loginTime;
+    }
+
+    public void setLoginTime(LocalDateTime loginTime) {
+        this.loginTime = loginTime;
+    }
+
+    public LocalDateTime getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(LocalDateTime createdTime) {
+        this.createdTime = createdTime;
+    }
+
+    @Override
+    public String toString() {
+        return "AdUser{" +
+            "id = " + id +
+            ", name = " + name +
+            ", password = " + password +
+            ", salt = " + salt +
+            ", nickname = " + nickname +
+            ", image = " + image +
+            ", phone = " + phone +
+            ", status = " + status +
+            ", email = " + email +
+            ", loginTime = " + loginTime +
+            ", createdTime = " + createdTime +
+            "}";
+    }
 }
