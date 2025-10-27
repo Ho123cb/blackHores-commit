@@ -50,4 +50,5 @@ public class ChannelController {
     public ResponseResult delete(@PathVariable("id") Integer id){
         return wmChannelService.deleteById(id);
     }
+
 }
