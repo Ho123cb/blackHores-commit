@@ -1,4 +1,4 @@
-package com.heima.adminGateway;
+package com.heima.user;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
@@ -9,7 +9,7 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 @EnableDiscoveryClient
 @RefreshScope
-@MapperScan("com.heima.adminGateway.mapper")
+@MapperScan("com.heima.user.mapper")
 @SpringBootApplication
 public class UserApplication {
 

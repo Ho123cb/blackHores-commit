@@ -1,4 +1,4 @@
-package com.heima.adminGateway.service.impl;
+package com.heima.user.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -6,8 +6,8 @@ import com.heima.model.common.dtos.LoginDto;
 import com.heima.model.common.dtos.ResponseResult;
 import com.heima.model.common.enums.AppHttpCodeEnum;
 import com.heima.model.user.pojos.ApUser;
-import com.heima.adminGateway.mapper.ApUserMapper;
-import com.heima.adminGateway.service.IApUserService;
+import com.heima.user.mapper.ApUserMapper;
+import com.heima.user.service.IApUserService;
 import com.heima.utils.common.AppJwtUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;

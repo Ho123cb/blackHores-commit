@@ -1,4 +1,4 @@
-package com.heima.adminGateway.service;
+package com.heima.user.service;
 
 import com.heima.model.common.dtos.LoginDto;
 import com.heima.model.common.dtos.ResponseResult;
