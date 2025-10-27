@@ -15,4 +15,11 @@ public class WemediaConstants {
 
     public static final Short WM_CONTENT_REFERENCE = 0;
     public static final Short WM_COVER_REFERENCE = 1;
+
+    public static final Short WM_NEWS_REVIEW_FAIL = 2;//审核失败
+    public static final Short WM_NEWS_PERSON_REVIEW_PASS = 4;//人工审核通过
+    public static final Short WM_NEWS_TO_PERSON_REVIEW = 3;//待人工审核
+    public static final Short WM_NEWS_REVIEW_PASS = 8;//审核通过
+    public static final Short WM_NEWS_PUBLISHED = 9;//已发布
+
 }

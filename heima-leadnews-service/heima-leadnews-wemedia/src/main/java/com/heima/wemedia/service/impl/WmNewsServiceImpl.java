@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.heima.common.constants.WemediaConstants;
@@ -14,16 +15,20 @@ import com.heima.common.exception.CustomException;
 import com.heima.model.common.dtos.PageResponseResult;
 import com.heima.model.common.dtos.ResponseResult;
 import com.heima.model.common.enums.AppHttpCodeEnum;
+import com.heima.model.wemedia.dtos.NewsAuthDto;
 import com.heima.model.wemedia.dtos.WmNewsDto;
 import com.heima.model.wemedia.dtos.WmNewsPageReqDto;
 import com.heima.model.wemedia.dtos.WmNewsUpOrDownDto;
 import com.heima.model.wemedia.pojos.WmMaterial;
 import com.heima.model.wemedia.pojos.WmNews;
 import com.heima.model.wemedia.pojos.WmNewsMaterial;
+import com.heima.model.wemedia.pojos.WmUser;
+import com.heima.model.wemedia.vos.WmNewsVO;
 import com.heima.utils.thread.WmThreadLocalUtil;
 import com.heima.wemedia.mapper.WmMaterialMapper;
 import com.heima.wemedia.mapper.WmNewsMapper;
 import com.heima.wemedia.mapper.WmNewsMaterialMapper;
+import com.heima.wemedia.mapper.WmUserMapper;
 import com.heima.wemedia.service.WmNewsAutoScanService;
 import com.heima.wemedia.service.WmNewsService;
 import com.heima.wemedia.service.WmNewsTaskService;
@@ -37,6 +42,7 @@ import org.codehaus.jackson.map.util.BeanUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionSynchronizationAdapter;
@@ -59,11 +65,15 @@ public class WmNewsServiceImpl  extends ServiceImpl<WmNewsMapper, WmNews> implem
     private WmNewsMaterialMapper wmNewsMaterialMapper;
     @Resource
     private WmMaterialMapper wmMaterialMapper;
+    @Resource
+    private WmUserMapper wmUserMapper;
 
     @Resource
     private WmNewsAutoScanService wmNewsAutoScanService;
     @Resource
     private WmNewsTaskService wmNewsTaskService;
+    @Resource
+    private WmNewsAutoScanService autoScanService;
 
     @Override
     public ResponseResult customList(WmNewsPageReqDto dto) {
@@ -318,6 +328,101 @@ public class WmNewsServiceImpl  extends ServiceImpl<WmNewsMapper, WmNews> implem
 
     }
 
+    @Override
+    public ResponseResult listVO(NewsAuthDto dto) {
+        if(dto == null)
+            return ResponseResult.errorResult(AppHttpCodeEnum.PARAM_INVALID);
+        dto.checkPage();
+
+        //分页参数
+        IPage<WmNews> pageResult = new Page<>(dto.getPage(),dto.getSize());
+
+        //条件查询参数
+        LambdaQueryWrapper<WmNews> lq = new LambdaQueryWrapper<>();
+
+        lq.eq(dto.getStatus() != null,WmNews::getStatus,dto.getStatus());
+        lq.like(StringUtils.isNotBlank(dto.getTitle()),WmNews::getTitle,dto.getTitle());
+        lq.orderByDesc(WmNews::getCreatedTime);
+
+        pageResult = page( pageResult, lq);
+
+        //构建额外添加authorName的实体集合
+        List<WmNewsVO> wmNewsVOS = pageResult.getRecords().stream().map(wmNews -> {
+            WmNewsVO wmNewsVO = new WmNewsVO();
+            try {
+                BeanUtils.copyProperties( wmNewsVO, wmNews);
+                //在wm_user表中查询出name
+                WmUser wmUser = wmUserMapper.selectById(wmNewsVO.getUserId());
+                wmNewsVO.setAuthorName(wmUser.getName());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return wmNewsVO;
+        }).collect(Collectors.toList());
+
+        //构建返回参数
+        PageResponseResult pageResponseResult = new PageResponseResult(dto.getPage(), dto.getSize(), (int)pageResult.getTotal());
+        pageResponseResult.setData(wmNewsVOS);
+
+        return  pageResponseResult;
+    }
+
+    @Override
+    public ResponseResult oneVO(Integer id) {
+        if(id == null)
+            return ResponseResult.errorResult(AppHttpCodeEnum.PARAM_INVALID);
+
+
+       WmNews wmNews = getById(id);
+       if(wmNews == null)
+           return ResponseResult.errorResult(AppHttpCodeEnum.DATA_NOT_EXIST);
+       WmNewsVO wmNewsVO = new WmNewsVO();
+       try {
+           BeanUtils.copyProperties( wmNewsVO, wmNews);
+           //在wm_user表中查询出name
+           WmUser wmUser = wmUserMapper.selectById(wmNewsVO.getUserId());
+           wmNewsVO.setAuthorName(wmUser.getName());
+       } catch (Exception e) {
+           e.printStackTrace();
+       }
+
+       return ResponseResult.okResult(wmNewsVO);
+    }
+
+    @Override
+    public ResponseResult updateStatus(NewsAuthDto dto, Short reviewStatus) {
+        if(dto == null || dto.getId() == null)
+            return ResponseResult.errorResult(AppHttpCodeEnum.PARAM_INVALID);
+
+        WmNews wmNews = getById(dto.getId());
+        if(wmNews == null)
+            return ResponseResult.errorResult(AppHttpCodeEnum.DATA_NOT_EXIST);
+
+        if(wmNews.getStatus() != WemediaConstants.WM_NEWS_TO_PERSON_REVIEW)
+            return ResponseResult.errorResult(AppHttpCodeEnum.DATA_STATUS_NOT_ALLOW);
+
+        Short status = null;
+        String reason = null;
+        if(reviewStatus == WemediaConstants.WM_NEWS_REVIEW_PASS){
+            status = WemediaConstants.WM_NEWS_REVIEW_PASS;
+            reason = "人工审核通过";
+            //填入App端相关文章信息
+            ResponseResult responseResult = autoScanService.saveAppArticle(wmNews);
+            if(!responseResult.getCode().equals(200)){
+                throw new RuntimeException("WmNewsAutoScanServiceImpl-文章审核，保存app端相关文章数据失败");
+            }
+        }else if(reviewStatus == WemediaConstants.WM_NEWS_REVIEW_FAIL){
+            status = WemediaConstants.WM_NEWS_REVIEW_FAIL;
+            reason = dto.getMsg();
+        }
+
+        wmNews.setStatus(status);
+        wmNews.setReason(reason);
+
+        //更新
+        updateById(wmNews);
+        return ResponseResult.okResult(AppHttpCodeEnum.SUCCESS);
+    }
 
 
 }
