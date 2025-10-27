@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.heima.model.admin.dtos.ChannelDto;
+import com.heima.model.admin.pojos.AdChannel;
 import com.heima.model.common.dtos.PageResponseResult;
 import com.heima.model.common.dtos.ResponseResult;
 import com.heima.model.common.enums.AppHttpCodeEnum;
@@ -13,6 +14,7 @@ import com.heima.model.wemedia.pojos.WmChannel;
 import com.heima.wemedia.mapper.WmChannelMapper;
 import com.heima.wemedia.service.WmChannelService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,5 +48,55 @@ public class WmChannelServiceImpl extends ServiceImpl<WmChannelMapper, WmChannel
         PageResponseResult pRG = new PageResponseResult(dto.getPage(),dto.getSize(),(int)page.getTotal());
         pRG.setData(page.getRecords());
         return pRG;
+    }
+
+    @Override
+    public ResponseResult customSave(AdChannel adChannel) {
+        //检查参数
+        if(adChannel == null || StringUtils.isBlank(adChannel.getName()))
+            return ResponseResult.errorResult(AppHttpCodeEnum.PARAM_INVALID);
+        WmChannel wmChannel = new WmChannel();
+        try {
+            BeanUtils.copyProperties(wmChannel, adChannel);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //执行保存
+        save(wmChannel);
+        return ResponseResult.okResult(AppHttpCodeEnum.SUCCESS);
+    }
+
+    @Override
+    public ResponseResult deleteById(Integer id) {
+        //检查参数
+        if(id == null)
+            return ResponseResult.errorResult(AppHttpCodeEnum.PARAM_INVALID);
+        //执行删除
+        boolean result = removeById(id);
+        //可能没有数据
+        if(result)
+            return ResponseResult.okResult(AppHttpCodeEnum.SUCCESS);
+
+        return ResponseResult.errorResult(AppHttpCodeEnum.DATA_NOT_EXIST);
+    }
+
+    @Override
+    public ResponseResult customUpdate(AdChannel adChannel) {
+        //检查参数
+        if(adChannel == null || adChannel.getId() == null)
+            return ResponseResult.errorResult(AppHttpCodeEnum.PARAM_INVALID);
+        WmChannel wmChannel = new WmChannel();
+        try {
+            BeanUtils.copyProperties(wmChannel, adChannel);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        //执行修改
+        boolean result = updateById(wmChannel);
+        if(result)
+            return ResponseResult.okResult(AppHttpCodeEnum.SUCCESS);
+
+        return ResponseResult.errorResult(AppHttpCodeEnum.DATA_NOT_EXIST);
     }
 }
