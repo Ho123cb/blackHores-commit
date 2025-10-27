@@ -1,12 +1,11 @@
 server:
   port: 6001
 spring:
-  application:
-    name: leadnews-wemedia-gateway
   cloud:
     nacos:
       discovery:
         server-addr: 192.168.200.130:8848
+        service: ${spring.application.name}
       config:
         server-addr: 192.168.200.130:8848
         file-extension: yaml

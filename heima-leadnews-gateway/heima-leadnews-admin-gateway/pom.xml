@@ -7,9 +7,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>heima-leadnews-admin-gateway</artifactId>
-    <packaging>war</packaging>
-    <name>heima-leadnews-admin-gateway Maven Webapp</name>
-    <url>http://maven.apache.org</url>
+    <packaging>jar</packaging>
     <dependencies>
         <dependency>
             <groupId>junit</groupId>

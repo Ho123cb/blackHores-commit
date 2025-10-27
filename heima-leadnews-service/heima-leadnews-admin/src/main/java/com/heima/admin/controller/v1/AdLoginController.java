@@ -11,13 +11,13 @@ import javax.annotation.Resource;
 
 @Api("管理员登录接口")
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/login")
 public class AdLoginController {
     @Resource
     private AdLoginService adLoginService;
 
     @ApiOperation("登录接口")
-    @PostMapping("/login/in")
+    @PostMapping("/in")
     public ResponseResult login(@RequestBody AdUserDto adUserDto) {
         return adLoginService.login(adUserDto);
     }
