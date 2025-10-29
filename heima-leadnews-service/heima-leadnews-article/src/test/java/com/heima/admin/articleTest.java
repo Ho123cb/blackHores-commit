@@ -3,8 +3,9 @@ package com.heima.admin;
 
 import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.heima.admin.mapper.ApArticleContentMapper;
-import com.heima.admin.mapper.ApArticleMapper;
+import com.heima.article.ArticleApplication;
+import com.heima.article.mapper.ApArticleContentMapper;
+import com.heima.article.mapper.ApArticleMapper;
 import com.heima.file.service.FileStorageService;
 import com.heima.model.article.pojos.ApArticle;
 import com.heima.model.article.pojos.ApArticleContent;
@@ -43,7 +44,7 @@ public class articleTest {
     @Test
     public void url() throws Exception {
         //1.获取文章内容
-        ApArticleContent apArticleContent = apArticleContentMapper.selectOne(Wrappers.<ApArticleContent>lambdaQuery().eq(ApArticleContent::getArticleId, 1302864436297482242L));
+        ApArticleContent apArticleContent = apArticleContentMapper.selectOne(Wrappers.<ApArticleContent>lambdaQuery().eq(ApArticleContent::getArticleId, 1383827787629252610L));
         if(apArticleContent != null && StringUtils.isNotBlank(apArticleContent.getContent())){
             //2.文章内容通过freemarker生成html文件
             StringWriter out = new StringWriter();

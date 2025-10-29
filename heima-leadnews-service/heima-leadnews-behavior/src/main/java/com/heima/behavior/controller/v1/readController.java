@@ -1,7 +1,7 @@
 package com.heima.behavior.controller.v1;
 
-import com.heima.behavior.service.LikeSerivce;
-import com.heima.model.behavior.dtos.LikesBehaviorDto;
+import com.heima.behavior.service.ReadService;
+import com.heima.model.behavior.dtos.ReadBehaviorDto;
 import com.heima.model.common.dtos.ResponseResult;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,16 +11,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
-@ApiOperation("用户行为点赞接口")
+@ApiOperation("用户行为阅读接口")
 @RestController
-@RequestMapping("/api/v1/likes_behavior")
-public class LikeController {
+@RequestMapping("/api/v1/read_behavior")
+public class readController {
     @Resource
-    private LikeSerivce likeSerice;
+    private ReadService readService;
 
-    @ApiOperation("点赞")
+    @ApiOperation("用户行为阅读记录")
     @PostMapping
-    public ResponseResult like(@RequestBody LikesBehaviorDto dto){
-        return likeSerice.like(dto);
+    public ResponseResult readBehavior(@RequestBody ReadBehaviorDto dto){
+        return readService.readBehavior(dto);
     }
 }

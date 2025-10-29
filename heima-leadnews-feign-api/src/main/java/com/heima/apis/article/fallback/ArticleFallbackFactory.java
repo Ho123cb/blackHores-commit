@@ -29,6 +29,8 @@ public class ArticleFallbackFactory implements FallbackFactory<ArticleOpenFeignC
             public ApArticle findOne(Long id) {
                 return null;
             }
+
+
         };
 //        return dto -> ResponseResult.errorResult(500, "降级：" + cause.getClass().getSimpleName());
     }

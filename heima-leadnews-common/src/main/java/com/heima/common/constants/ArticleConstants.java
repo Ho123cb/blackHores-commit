@@ -12,4 +12,9 @@ public class ArticleConstants {
     public static final Integer HOT_ARTICLE_COLLECTION_WEIGHT = 8;
 
     public static final String HOT_ARTICLE_FIRST_PAGE = "hot_article_first_page_";
+
+
+    public static final Short TYPE_ARTICLE = 0;
+    public static final Short TYPE_DYNAMIC = 1;
+    public static final Short TYPE_COMMENT = 2;
 }

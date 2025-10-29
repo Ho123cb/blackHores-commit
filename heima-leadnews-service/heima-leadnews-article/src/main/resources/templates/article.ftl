@@ -113,59 +113,80 @@
         </van-col>
     </van-row>
 
-    <!-- 评论Popup 弹出层 -->
-    <van-popup v-model="showPopup" closeable position="bottom"
-               :style="{ width: '750px', height: '60%', left: '50%', 'margin-left': '-375px' }">
-        <!-- 评论回复列表 -->
-        <van-list v-model="commentRepliesLoading" :finished="commentRepliesFinished" finished-text="没有更多了"
-                  @load="onLoadCommentReplies">
-            <van-row id="#comment-reply-view" type="flex" class="article-comment-reply"
-                     v-for="(item, index) in commentReplies" :key="index">
-                <van-col span="3">
-                    <van-image round src="https://p3.pstatp.com/thumb/1480/7186611868" class="article-avatar"></van-image>
-                </van-col>
-                <van-col span="21">
-                    <van-row type="flex" align="center" justify="space-between">
-                        <van-col class="comment-author" v-html="item.authorName"></van-col>
-                        <van-col>
-                            <van-button round :icon="item.operation === 0 ? 'good-job' : 'good-job-o'" size="normal"
-                                        @click="handleClickCommentReplyLike(item)">{{ item.likes || '' }}
-                            </van-button>
-                        </van-col>
-                    </van-row>
+    <!-- ✅ 修复版 评论Popup 弹出层 -->
+    <van-popup
+            v-model="showPopup"
+            closeable
+            position="bottom"
+            round
+            :style="{ width: '100%', height: '60%' }">
 
-                    <van-row>
-                        <van-col class="comment-content" v-html="item.content"></van-col>
-                    </van-row>
-                    <van-row type="flex" align="center">
-                        <!-- TODO: js计算时间差 -->
-                        <van-col span="10" class="comment-time">
-                            {{ item.createdTime | timestampToDateTime }}
-                        </van-col>
-                    </van-row>
+        <!-- 评论回复列表 -->
+        <div class="popup-content" style="width:100%; overflow-x:auto;">
+            <van-list
+                    v-model="commentRepliesLoading"
+                    :finished="commentRepliesFinished"
+                    finished-text="没有更多了"
+                    @load="onLoadCommentReplies">
+
+                <van-row id="#comment-reply-view"
+                         type="flex"
+                         class="article-comment-reply"
+                         v-for="(item, index) in commentReplies"
+                         :key="index">
+                    <van-col span="3">
+                        <van-image round src="https://p3.pstatp.com/thumb/1480/7186611868"
+                                   class="article-avatar"></van-image>
+                    </van-col>
+
+                    <van-col span="21">
+                        <van-row type="flex" align="center" justify="space-between">
+                            <van-col class="comment-author" v-html="item.authorName"></van-col>
+                            <van-col>
+                                <van-button round
+                                            :icon="item.operation === 0 ? 'good-job' : 'good-job-o'"
+                                            size="normal"
+                                            @click="handleClickCommentReplyLike(item)">
+                                    {{ item.likes || '' }}
+                                </van-button>
+                            </van-col>
+                        </van-row>
+
+                        <van-row>
+                            <van-col class="comment-content" v-html="item.content"></van-col>
+                        </van-row>
+
+                        <van-row type="flex" align="center">
+                            <van-col span="10" class="comment-time">
+                                {{ item.createdTime | timestampToDateTime }}
+                            </van-col>
+                        </van-row>
+                    </van-col>
+                </van-row>
+            </van-list>
+
+            <!-- 评论回复底部栏 -->
+            <van-row type="flex" justify="space-around" align="center" class="comment-reply-bottom-bar">
+                <van-col span="13">
+                    <van-field v-model="commentReplyValue" placeholder="写评论">
+                        <template #button>
+                            <van-button icon="back-top" @click="handleSaveCommentReply"></van-button>
+                        </template>
+                    </van-field>
+                </van-col>
+                <van-col span="3">
+                    <van-button icon="comment-o"></van-button>
+                </van-col>
+                <van-col span="3">
+                    <van-button icon="star-o"></van-button>
+                </van-col>
+                <van-col span="3">
+                    <van-button icon="share-o"></van-button>
                 </van-col>
             </van-row>
-        </van-list>
-        <!-- 评论回复底部栏 -->
-        <van-row type="flex" justify="space-around" align="center" class="comment-reply-bottom-bar">
-            <van-col span="13">
-                <van-field v-model="commentReplyValue" placeholder="写评论">
-                    <template #button>
-                        <van-button icon="back-top" @click="handleSaveCommentReply"></van-button>
-                    </template>
-                </van-field>
-            </van-col>
-            <van-col span="3">
-                <van-button icon="comment-o"></van-button>
-            </van-col>
-            <van-col span="3">
-                <van-button icon="star-o"></van-button>
-            </van-col>
-            <van-col span="3">
-                <van-button icon="share-o"></van-button>
-            </van-col>
-        </van-row>
+        </div>
     </van-popup>
+
 </div>
 
 <!-- 引入 Vue 和 Vant 的 JS 文件 -->
@@ -178,5 +199,18 @@
 <!-- 页面逻辑 -->
 <script src="../../../plugins/js/index.js"></script>
 </body>
+<style>
+    @media screen and (max-width: 750px) {
+        .van-popup {
+            width: 100% !important;
+            left: 0 !important;
+            margin-left: 0 !important;
+        }
+        .popup-content {
+            max-width: 100%;
+            overflow-x: auto;
+        }
+    }
+</style>
 
 </html>

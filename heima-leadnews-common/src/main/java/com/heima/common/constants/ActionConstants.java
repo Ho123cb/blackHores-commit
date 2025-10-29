@@ -5,13 +5,12 @@ public class ActionConstants {
     public static final short Like_OPERATINO_CLICK = 0;
     public static final short Like_OPERATINO_UN_CLICK = 1;
 
-    public static final short TYPE_ARTICLE = 0;
-    public static final short TYPE_DYNAMIC = 1;
-    public static final short TYPE_COMMENT = 2;
 
     public static final String ACTION_TYPE_LIKE = "like";
-    public static final String ACTION_TYPE_UN_LIKE = "unlike";
-    public static final String ACTION_TYPE_FOLLOW = "follow";
-    public static final String ACTION_TYPE_UN_FOLLOW = "unfollow";
+    public static final String ACTION_TYPE_UNLIKE = "unlike";
+    public static final String ACTION_TYPE_READ = "read";
+    public static final String ACTION_TYPE_COLLECTION = "collection";
 
+    public static final String APUSER_FOLLOW_RELATION = "follow_relations";
+    public static final String APUSER_FANS_RELATION = "fans_relations";
 }

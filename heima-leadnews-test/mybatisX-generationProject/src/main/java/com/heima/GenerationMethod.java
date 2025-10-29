@@ -10,10 +10,11 @@ import java.util.Collections;
 import static com.baomidou.mybatisplus.generator.config.builder.GeneratorBuilder.packageConfig;
 
 public class GenerationMethod {
-    static String cpackage = "user";
+    static String tableName = "ap_author";
+    static String cpackage = "article";
     static String  to = "E:\\FinnHu\\Code\\java\\javaClassStudy\\project\\blackHorseCommit\\code\\heima-leadnews\\heima-leadnews-test\\mybatisX-generationProject\\src\\main\\resources\\generation";
         public static void main(String[] args) {
-                FastAutoGenerator.create("jdbc:mysql://127.0.0.1:3306/leadnews_user?characterEncoding=utf-8&userSSL=false", "root", "root")
+                FastAutoGenerator.create("jdbc:mysql://127.0.0.1:3306/leadnews_article?characterEncoding=utf-8&userSSL=false", "root", "root")
                         .globalConfig(builder -> {
                             builder.author("finnhu") // 设置作者
                                     //.enableSwagger() // 开启 swagger 模式
@@ -25,12 +26,13 @@ public class GenerationMethod {
                                     .entity("model."+cpackage+".pojos")
                                     .service(cpackage+ ".service")
                                     .serviceImpl(cpackage+ "service.impl")
+                                    .mapper(cpackage+ ".mapper")
                                     .pathInfo(Collections.singletonMap(OutputFile.xml, to)); // 设置mapperXml生成路径
                         })
 
                         .strategyConfig(builder -> {
                             builder.addInclude(
-                                    "ap_user_realname");// 设置需要生成的表名
+                                   tableName );// 设置需要生成的表名
 //                            .addTablePrefix("t_", "c_"); // 设置过滤表前缀
                         })
                         .templateEngine(new FreemarkerTemplateEngine()) // 使用Freemarker引擎模板，默认的是Velocity引擎模板
