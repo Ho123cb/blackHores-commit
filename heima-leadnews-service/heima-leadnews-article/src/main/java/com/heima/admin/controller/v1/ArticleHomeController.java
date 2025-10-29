@@ -6,8 +6,10 @@ import com.heima.model.article.dtos.ArticleDto;
 import com.heima.model.article.dtos.ArticleHomeDto;
 import com.heima.model.article.pojos.ApArticle;
 import com.heima.model.common.dtos.ResponseResult;
+import com.heima.model.common.enums.AppHttpCodeEnum;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -61,5 +63,18 @@ public class ArticleHomeController {
         article.setAuthorName("sdadsa");
         iApArticleService.save(article);
         return null;
+    }
+
+    /**
+     * 根据文章id查询文章
+     * @param id
+     * @return
+     */
+    @GetMapping("/{id}")
+    public ApArticle findOne(@PathVariable("id") Long id) {
+        if(id == null)
+            return  null;
+
+        return iApArticleService.getById(id);
     }
 }

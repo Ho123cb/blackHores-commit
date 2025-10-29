@@ -10,6 +10,10 @@ spring:
       config:
         server-addr: 192.168.200.130:8848
         file-extension: yaml
+  jpa:
+    properties:
+      hibernate:
+        enable_lazy_load_no_trans: true
 
 logging:
   level:

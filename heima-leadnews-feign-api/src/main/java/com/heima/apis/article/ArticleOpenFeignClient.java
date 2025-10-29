@@ -2,12 +2,10 @@ package com.heima.apis.article;
 
 import com.heima.apis.article.fallback.ArticleFallbackFactory;
 import com.heima.model.article.dtos.ArticleDto;
+import com.heima.model.article.pojos.ApArticle;
 import com.heima.model.common.dtos.ResponseResult;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @FeignClient(value = "leadnews-article", fallbackFactory = ArticleFallbackFactory.class)
 public interface ArticleOpenFeignClient {
@@ -25,4 +23,11 @@ public interface ArticleOpenFeignClient {
     @GetMapping("/api/v1/article/saves")
     public ResponseResult saves();
 
+    /**
+     * 根据文章id查询文章
+     * @param id
+     * @return
+     */
+    @GetMapping("/api/v1/article/{id}")
+    public ApArticle findOne(@PathVariable("id") Long id) ;
 }
