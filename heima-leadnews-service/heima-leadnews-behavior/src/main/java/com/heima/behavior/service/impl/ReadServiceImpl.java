@@ -6,6 +6,8 @@ import com.heima.behavior.service.ReadService;
 import com.heima.common.cache.CacheService;
 import com.heima.common.constants.ActionConstants;
 import com.heima.common.constants.ArticleConstants;
+import com.heima.common.constants.HotArticleConstants;
+import com.heima.model.article.mess.UpdateArticleMess;
 import com.heima.model.article.pojos.ApArticle;
 import com.heima.model.behavior.dtos.LikesBehaviorDto;
 import com.heima.model.behavior.dtos.ReadBehaviorDto;
@@ -16,6 +18,7 @@ import com.heima.utils.behavior.CacheUtils;
 import com.heima.utils.thread.AppThreadLocalUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -27,6 +30,8 @@ public class ReadServiceImpl implements ReadService {
     private CacheService cacheService;
     @Resource
     private ArticleOpenFeignClient articleOpenFeignClient;
+    @Resource
+    private KafkaTemplate kafkaTemplate;
     @Override
     public ResponseResult readBehavior(ReadBehaviorDto dto) {
         //1.检查参数
@@ -48,6 +53,13 @@ public class ReadServiceImpl implements ReadService {
         // 保存当前key
         log.info("保存当前key:{} {} {}", dto.getArticleId(), user.getId(), dto);
         cacheService.hPut(ActionConstants.ACTION_TYPE_READ + dto.getArticleId().toString(), user.getId().toString(), JSON.toJSONString(dto));
+        //发送消息，数据聚合
+        UpdateArticleMess mess = new UpdateArticleMess();
+        mess.setArticleId(dto.getArticleId());
+        mess.setType(UpdateArticleMess.UpdateArticleType.VIEWS);
+        mess.setAdd(1);
+        kafkaTemplate.send(HotArticleConstants.HOT_ARTICLE_SCORE_TOPIC,JSON.toJSONString(mess));
+
         return ResponseResult.okResult(AppHttpCodeEnum.SUCCESS);
     }
 }

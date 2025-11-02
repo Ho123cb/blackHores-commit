@@ -15,24 +15,24 @@ spring:
       hibernate:
         enable_lazy_load_no_trans: true
 
-logging:
-  level:
-    # MyBatis 主包
-    org.mybatis: debug
-    # 如果是 Spring Boot 集成的 MyBatis Starter
-    org.mybatis.spring.SqlSessionFactoryBean: debug
-    # 如果是 MyBatis-Plus
-    com.baomidou.mybatisplus: debug
-    # Mapper 扫描包（可选，建议加）
-    com.heima.mapper: debug
-    org.apache.ibatis: debug
-    com.yourpkg.mapper: debug
-    org.springframework.cloud.openfeign: DEBUG
-    com.netflix.hystrix: DEBUG
-    feign: DEBUG
+#logging:
+#  level:
+#    # MyBatis 主包
+#    org.mybatis: debug
+#    # 如果是 Spring Boot 集成的 MyBatis Starter
+#    org.mybatis.spring.SqlSessionFactoryBean: debug
+#    # 如果是 MyBatis-Plus
+#    com.baomidou.mybatisplus: debug
+#    # Mapper 扫描包（可选，建议加）
+#    com.heima.mapper: debug
+#    org.apache.ibatis: debug
+#    com.yourpkg.mapper: debug
+#    org.springframework.cloud.openfeign: DEBUG
+#    com.netflix.hystrix: DEBUG
+#    feign: DEBUG
 
-mybatis-plus:
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#mybatis-plus:
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 

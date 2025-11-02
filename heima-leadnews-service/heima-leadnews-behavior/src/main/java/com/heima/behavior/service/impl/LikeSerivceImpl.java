@@ -5,6 +5,8 @@ import com.heima.apis.article.ArticleOpenFeignClient;
 import com.heima.behavior.service.LikeSerivce;
 import com.heima.common.cache.CacheService;
 import com.heima.common.constants.ActionConstants;
+import com.heima.common.constants.HotArticleConstants;
+import com.heima.model.article.mess.UpdateArticleMess;
 import com.heima.model.article.pojos.ApArticle;
 import com.heima.model.behavior.dtos.LikesBehaviorDto;
 import com.heima.model.common.dtos.ResponseResult;
@@ -14,6 +16,7 @@ import com.heima.utils.behavior.CacheUtils;
 import com.heima.utils.thread.AppThreadLocalUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -25,6 +28,8 @@ public class LikeSerivceImpl implements LikeSerivce {
     private CacheService cacheService;
     @Resource
     private ArticleOpenFeignClient articleOpenFeignClient;
+    @Resource
+    private KafkaTemplate kafkaTemplate;
     @Override
     public ResponseResult like(LikesBehaviorDto dto) {
         //1.检查参数
@@ -37,7 +42,9 @@ public class LikeSerivceImpl implements LikeSerivce {
         if (user == null) {
             return ResponseResult.errorResult(AppHttpCodeEnum.NEED_LOGIN);
         }
-
+        UpdateArticleMess mess = new UpdateArticleMess();
+        mess.setArticleId(dto.getArticleId());
+        mess.setType(UpdateArticleMess.UpdateArticleType.LIKES);
         //3.点赞  保存数据
         if (dto.getOperation() == 0) {
             Object obj = cacheService.hGet(ActionConstants.ACTION_TYPE_LIKE + dto.getArticleId().toString(), user.getId().toString());
@@ -47,12 +54,15 @@ public class LikeSerivceImpl implements LikeSerivce {
             // 保存当前key
             log.info("保存当前key:{} ,{}, {}", dto.getArticleId(), user.getId(), dto);
             cacheService.hPut(ActionConstants.ACTION_TYPE_LIKE + dto.getArticleId().toString(), user.getId().toString(), JSON.toJSONString(dto));
+            mess.setAdd(+1);
         } else {
             // 删除当前key
             log.info("删除当前key:{}, {}", dto.getArticleId(), user.getId());
             cacheService.hDelete(ActionConstants.ACTION_TYPE_LIKE + dto.getArticleId().toString(), user.getId().toString());
+            mess.setAdd(-1);
         }
-
+        //发送消息，数据聚合
+        kafkaTemplate.send(HotArticleConstants.HOT_ARTICLE_SCORE_TOPIC,JSON.toJSONString(mess));
 
         return ResponseResult.okResult(AppHttpCodeEnum.SUCCESS);
     }
