@@ -23,7 +23,8 @@ public class ArticleHomeController {
     @ApiOperation("文章首页加载")
     @PostMapping("/load")
     public ResponseResult load(@RequestBody ArticleHomeDto dto){
-        ResponseResult result = iApArticleService.load(ArticleConstants.LOADTYPE_LOAD_MORE,dto);
+//        ResponseResult result = iApArticleService.load(ArticleConstants.LOADTYPE_LOAD_MORE,dto);
+        ResponseResult result = iApArticleService.load2(ArticleConstants.LOADTYPE_LOAD_MORE,dto,true);
         return result;
     }
 

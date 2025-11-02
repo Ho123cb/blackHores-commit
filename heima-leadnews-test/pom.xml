@@ -24,6 +24,7 @@
         <module>kafaka-demo</module>
         <module>es-init</module>
         <module>mongo-demo</module>
+        <module>xxl-job-demo</module>
     </modules>
     <dependencies>
         <dependency>

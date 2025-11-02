@@ -1,11 +1,13 @@
 package com.heima.article.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.heima.article.mapper.ApArticleConfigMapper;
 import com.heima.article.mapper.ApArticleContentMapper;
 import com.heima.article.mapper.ApArticleMapper;
 import com.heima.article.service.ArticleFreemarkerService;
 import com.heima.article.service.IApArticleService;
+import com.heima.common.cache.CacheService;
 import com.heima.common.constants.ArticleConstants;
 import com.heima.model.article.dtos.ArticleDto;
 import com.heima.model.article.dtos.ArticleHomeDto;
@@ -16,6 +18,7 @@ import com.heima.model.common.dtos.ResponseResult;
 import com.heima.model.common.enums.AppHttpCodeEnum;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +26,8 @@ import javax.annotation.Resource;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.List;
+import org.apache.commons.lang3.math.NumberUtils;
+
 
 /**
  * <p>
@@ -44,7 +49,8 @@ public class ApArticleServiceImpl extends ServiceImpl<ApArticleMapper, ApArticle
 
     // 单页最大加载的数字
     private final static short MAX_PAGE_SIZE = 50;
-
+    @Autowired
+    private CacheService cacheService;
 
 
     /**
@@ -178,5 +184,19 @@ public class ApArticleServiceImpl extends ServiceImpl<ApArticleMapper, ApArticle
      */
 
 
+    @Override
+    public ResponseResult load2(Short loadtype, ArticleHomeDto dto, Boolean firstPage) {
+        //通过缓存中获取
+        if(firstPage) {
+            String key = ArticleConstants.HOT_ARTICLE_FIRST_PAGE +
+                    (NumberUtils.isNumber(dto.getTag())? dto.getTag():ArticleConstants.DEFAULT_TAG);
+            String resultStr = cacheService.get(key);
+            if(StringUtils.isEmpty(resultStr))
+                return ResponseResult.errorResult(AppHttpCodeEnum.DATA_NOT_EXIST);
+            List<ApArticle> apArticles = JSON.parseArray(resultStr, ApArticle.class);
+            return ResponseResult.okResult(apArticles);
+        }
 
+        return load(loadtype, dto);
+    }
 }

@@ -17,4 +17,6 @@ public class ArticleConstants {
     public static final Short TYPE_ARTICLE = 0;
     public static final Short TYPE_DYNAMIC = 1;
     public static final Short TYPE_COMMENT = 2;
+
+    public static final String HOT_ARTICLE = "hot_article_";
 }

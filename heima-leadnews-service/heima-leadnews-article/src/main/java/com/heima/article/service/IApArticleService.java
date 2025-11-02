@@ -30,7 +30,12 @@ public interface IApArticleService extends IService<ApArticle> {
      */
     ResponseResult customSave(ArticleDto dto) ;
 
-
+    /**
+     * 加载首页
+     * @param dto
+     * @return
+     */
+    ResponseResult load2( Short loadtype, ArticleHomeDto dto, Boolean firstPage);
 
 
 }

@@ -28,7 +28,6 @@ public class ChannelController {
 
     @ApiOperation("分页模糊查询")
     @PostMapping("/list")
-    //TODO 分析清楚如果通过feign接口调用改变一跳和二跳请求方法会不会导致出错呢
     public ResponseResult list(@RequestBody ChannelDto dto){
         return wmChannelService.list(dto);
     }
@@ -50,5 +49,6 @@ public class ChannelController {
     public ResponseResult delete(@PathVariable("id") Integer id){
         return wmChannelService.deleteById(id);
     }
+
 
 }
