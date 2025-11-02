@@ -36,10 +36,12 @@ class KafakaDemoApplicationTests {
             KafkaProducer<String,String> producer = new KafkaProducer<String, String>(properties);
 
             //封装发送的消息
-            ProducerRecord<String,String> record = new ProducerRecord<String, String>("itheima-topic","100001","hello kafka");
+            ProducerRecord<String,String> record = new ProducerRecord<String, String>("itcast-topic-input","100001","hello kafka");
 
             //3.发送消息
-            producer.send(record);
+//            producer.send(record);
+            for(int i = 0; i < 5; i++)
+                producer.send(record);
 
             //4.关闭消息通道，必须关闭，否则消息发送不成功
             producer.close();

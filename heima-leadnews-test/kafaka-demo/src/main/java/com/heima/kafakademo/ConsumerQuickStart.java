@@ -29,7 +29,7 @@ public class ConsumerQuickStart {
         KafkaConsumer<String, String> consumer = new KafkaConsumer<String, String>(properties);
 
         //3.订阅主题
-        consumer.subscribe(Collections.singletonList("itheima-topic"));
+        consumer.subscribe(Collections.singletonList("itcast-topic-input"));
 
         //当前线程一直处于监听状态
         while (true) {

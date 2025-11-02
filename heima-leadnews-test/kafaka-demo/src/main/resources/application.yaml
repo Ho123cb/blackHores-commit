@@ -1,0 +1,6 @@
+logging:
+  level:
+    org.apache.kafka: WARN
+    org.apache.kafka.clients: WARN
+    org.apache.kafka.streams: WARN
+    org.apache.zookeeper: ERROR

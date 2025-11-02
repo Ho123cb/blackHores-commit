@@ -25,6 +25,7 @@
         <module>es-init</module>
         <module>mongo-demo</module>
         <module>xxl-job-demo</module>
+        <module>kafkaStream-demo</module>
     </modules>
     <dependencies>
         <dependency>
