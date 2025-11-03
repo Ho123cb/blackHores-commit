@@ -16,7 +16,8 @@ spring:
       group-id: leadnews
       key-deserializer: StringDeserializer
       value-deserializer: StringDeserializer
-
+  profiles:
+    active: dev
 logging:
   level:
     # MyBatis 主包
