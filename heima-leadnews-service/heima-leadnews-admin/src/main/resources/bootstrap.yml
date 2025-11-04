@@ -12,6 +12,10 @@ spring:
         file-extension: yaml
   profiles:
     active: dev
+management:
+  health:
+    db:
+      enabled: false
 #  kafka:
 #    consumer:
 #      bootstrap-servers: 192.168.200.130:9092

@@ -33,5 +33,8 @@ logging:
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-
+management:
+  health:
+    db:
+      enabled: false
 

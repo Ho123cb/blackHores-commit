@@ -16,6 +16,10 @@ spring:
         enable_lazy_load_no_trans: true
   profiles:
     active: dev
+management:
+  health:
+    db:
+      enabled: false
 #logging:
 #  level:
 #    # MyBatis 主包
