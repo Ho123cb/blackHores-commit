@@ -39,6 +39,14 @@
             <groupId>com.heima</groupId>
             <artifactId>heima-leadnews-common</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <finalName>heima-leadnews-wemedia</finalName>
