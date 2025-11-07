@@ -43,4 +43,11 @@ public interface IApArticleService extends IService<ApArticle> {
      * @param mess
      */
     public void updateScore(ArticleVisitStreamMess mess);
+
+    /**
+     * 根据文章id查询出作者id以及名字
+     * @param id
+     * @return
+     */
+    ResponseResult findAuthorIdAndName(Long id);
 }

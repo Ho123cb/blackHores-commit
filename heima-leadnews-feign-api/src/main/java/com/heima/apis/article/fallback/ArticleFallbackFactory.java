@@ -30,7 +30,6 @@ public class ArticleFallbackFactory implements FallbackFactory<ArticleOpenFeignC
                 return null;
             }
 
-
         };
 //        return dto -> ResponseResult.errorResult(500, "降级：" + cause.getClass().getSimpleName());
     }

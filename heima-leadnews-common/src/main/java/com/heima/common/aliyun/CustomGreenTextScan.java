@@ -82,7 +82,7 @@ public class CustomGreenTextScan {
 
                             resultMap.put("riskLevel",riskLevel);
                             resultMap.put("label", StringUtils.join(labels,","));
-                            if(riskLevel.equals("hign"))
+                            if(riskLevel.equals("high"))
                                 resultMap.put("suggestion", "block");
                             else
                                 resultMap.put("suggestion", "review");

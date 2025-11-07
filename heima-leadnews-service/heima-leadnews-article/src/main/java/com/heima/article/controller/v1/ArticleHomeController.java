@@ -77,4 +77,12 @@ public class ArticleHomeController {
         return iApArticleService.getById(id);
     }
 
+    /**
+     * 根据文章id查询作者id以及作者名字
+     */
+    @GetMapping("/findAuthorIdAndName/{id}")
+    public ResponseResult findAuthorIdAndName(@PathVariable("id") Long id) {
+        return iApArticleService.findAuthorIdAndName(id);
+    }
+
 }

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.heima.article.mapper.ApArticleConfigMapper;
 import com.heima.article.mapper.ApArticleContentMapper;
 import com.heima.article.mapper.ApArticleMapper;
+import com.heima.article.mapper.ApAuthorMapper;
 import com.heima.article.service.ArticleFreemarkerService;
 import com.heima.article.service.IApArticleService;
 import com.heima.common.cache.CacheService;
@@ -15,7 +16,10 @@ import com.heima.model.article.mess.ArticleVisitStreamMess;
 import com.heima.model.article.pojos.ApArticle;
 import com.heima.model.article.pojos.ApArticleConfig;
 import com.heima.model.article.pojos.ApArticleContent;
+import com.heima.model.article.pojos.ApAuthor;
 import com.heima.model.article.vos.ApArticleVo;
+import com.heima.model.article.vos.ArticleAuthorVo;
+import com.heima.model.common.dtos.PageResponseResult;
 import com.heima.model.common.dtos.ResponseResult;
 import com.heima.model.common.enums.AppHttpCodeEnum;
 import org.apache.commons.beanutils.BeanUtils;
@@ -51,6 +55,8 @@ public class ApArticleServiceImpl extends ServiceImpl<ApArticleMapper, ApArticle
     private ApArticleContentMapper apArticleContentMapper;
     @Resource
     private ApArticleConfigMapper apArticleConfigMapper;
+    @Resource
+    private ApAuthorMapper apAuthorMapper;
 
     // 单页最大加载的数字
     private final static short MAX_PAGE_SIZE = 50;
@@ -315,5 +321,16 @@ public class ApArticleServiceImpl extends ServiceImpl<ApArticleMapper, ApArticle
         }
 
         return score;
+    }
+
+    @Override
+    public ResponseResult findAuthorIdAndName(Long id) {
+        ApArticle article = apArticleMapper.selectById(id);
+        ArticleAuthorVo articleAuthorVo = new ArticleAuthorVo();
+        articleAuthorVo.setAuthorName(article.getAuthorName());
+        articleAuthorVo.setAuthorId(article.getAuthorId().longValue());
+        ResponseResult result = new ResponseResult();
+        result.setData(articleAuthorVo);
+        return result;
     }
 }

@@ -1,21 +1,20 @@
-package com.heima.user;
+package com.heima.comment;
 
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
-@EnableFeignClients
+
 @EnableDiscoveryClient
 @RefreshScope
-@MapperScan("com.heima.user.mapper")
 @SpringBootApplication
-public class UserApplication {
+@EnableFeignClients(basePackages = "com.heima.apis")
+public class CommentApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(UserApplication.class, args);
+        SpringApplication.run(CommentApplication.class, args);
     }
 
 }

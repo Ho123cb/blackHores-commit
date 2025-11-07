@@ -31,4 +31,6 @@ public interface ArticleOpenFeignClient {
     @GetMapping("/api/v1/article/{id}")
     public ApArticle findOne(@PathVariable("id") Long id) ;
 
+
+
 }
