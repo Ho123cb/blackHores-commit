@@ -52,4 +52,14 @@
         order by aa.publish_time desc
         limit #{dto.size}
     </select>
+    <select id="customSelectPage" resultType="com.heima.model.article.vos.ArticleManageVo">
+        SELECT
+            a.id as id,
+            a.title as title,
+            a.`comment` as comments,
+            ac.is_comment as is_comment,
+            a.created_time as create_time
+        from ap_article a left JOIN ap_article_config ac on a.id = ac.article_id
+        ${ew.customSqlSegment}
+    </select>
 </mapper>

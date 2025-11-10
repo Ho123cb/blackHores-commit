@@ -4,6 +4,7 @@ import com.heima.apis.article.fallback.ArticleFallbackFactory;
 import com.heima.model.article.dtos.ArticleDto;
 import com.heima.model.article.pojos.ApArticle;
 import com.heima.model.common.dtos.ResponseResult;
+import com.heima.model.wemedia.dtos.CommentManageDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +32,7 @@ public interface ArticleOpenFeignClient {
     @GetMapping("/api/v1/article/{id}")
     public ApArticle findOne(@PathVariable("id") Long id) ;
 
-
+    @PostMapping("/api/v1/article/manage/list")
+    public ResponseResult findNewsComments(@RequestBody CommentManageDto dto);
 
 }

@@ -18,10 +18,10 @@ import com.heima.model.article.pojos.ApArticleConfig;
 import com.heima.model.article.pojos.ApArticleContent;
 import com.heima.model.article.pojos.ApAuthor;
 import com.heima.model.article.vos.ApArticleVo;
-import com.heima.model.article.vos.ArticleAuthorVo;
 import com.heima.model.common.dtos.PageResponseResult;
 import com.heima.model.common.dtos.ResponseResult;
 import com.heima.model.common.enums.AppHttpCodeEnum;
+import com.heima.model.user.vos.UserAuthorVo;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -326,7 +326,7 @@ public class ApArticleServiceImpl extends ServiceImpl<ApArticleMapper, ApArticle
     @Override
     public ResponseResult findAuthorIdAndName(Long id) {
         ApArticle article = apArticleMapper.selectById(id);
-        ArticleAuthorVo articleAuthorVo = new ArticleAuthorVo();
+        UserAuthorVo articleAuthorVo = new UserAuthorVo();
         articleAuthorVo.setAuthorName(article.getAuthorName());
         articleAuthorVo.setAuthorId(article.getAuthorId().longValue());
         ResponseResult result = new ResponseResult();
